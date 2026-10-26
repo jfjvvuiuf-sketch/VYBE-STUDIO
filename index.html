@@ -1,0 +1,1792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VYBE Studio</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Inter, Arial, sans-serif;
+}
+
+body {
+    background: #08090d;
+    color: #fff;
+    min-height: 100vh;
+}
+
+button {
+    cursor: pointer;
+    border: 0;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ================= LOGIN ================= */
+
+#authScreen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+        radial-gradient(circle at top left, #4422ff33, transparent 35%),
+        radial-gradient(circle at bottom right, #00e5ff22, transparent 35%),
+        #08090d;
+}
+
+.auth-box {
+    width: 420px;
+    max-width: 92%;
+    background: #11131a;
+    border: 1px solid #252936;
+    border-radius: 24px;
+    padding: 35px;
+    box-shadow: 0 25px 80px #0008;
+}
+
+.logo {
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: -2px;
+}
+
+.logo span {
+    color: #8d5cff;
+}
+
+.auth-subtitle {
+    color: #8f95a5;
+    margin: 8px 0 28px;
+}
+
+.input {
+    width: 100%;
+    background: #191c25;
+    border: 1px solid #2a2e3b;
+    color: white;
+    padding: 14px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    outline: none;
+}
+
+.input:focus {
+    border-color: #8d5cff;
+}
+
+.primary-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #8d5cff, #5f38ff);
+    color: white;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: 800;
+    margin-top: 5px;
+}
+
+.secondary-btn {
+    background: #1b1e27;
+    color: white;
+    border: 1px solid #303442;
+    padding: 12px 16px;
+    border-radius: 10px;
+}
+
+.switch-auth {
+    text-align: center;
+    color: #8f95a5;
+    margin-top: 20px;
+}
+
+.switch-auth span {
+    color: #9b72ff;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+/* ================= APP ================= */
+
+#app {
+    min-height: 100vh;
+    display: flex;
+}
+
+.sidebar {
+    width: 245px;
+    background: #0d0f14;
+    border-right: 1px solid #222530;
+    padding: 24px 15px;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+}
+
+.sidebar-logo {
+    padding: 0 12px 30px;
+}
+
+.nav-title {
+    color: #666c7b;
+    font-size: 11px;
+    font-weight: 800;
+    margin: 18px 12px 8px;
+    text-transform: uppercase;
+}
+
+.nav-item {
+    padding: 12px 14px;
+    border-radius: 10px;
+    margin-bottom: 4px;
+    color: #979cab;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.nav-item:hover,
+.nav-item.active {
+    color: white;
+    background: #1a1d27;
+}
+
+.main {
+    margin-left: 245px;
+    width: calc(100% - 245px);
+    padding: 28px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.page-title {
+    font-size: 27px;
+    font-weight: 850;
+}
+
+.page-subtitle {
+    color: #818797;
+    margin-top: 5px;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg,#8d5cff,#00c8ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+}
+
+/* ================= CARDS ================= */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+}
+
+.card {
+    background: #11131a;
+    border: 1px solid #242833;
+    border-radius: 17px;
+    padding: 20px;
+}
+
+.stat-label {
+    color: #818797;
+    font-size: 13px;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: 850;
+    margin-top: 10px;
+}
+
+.stat-change {
+    color: #4be39b;
+    font-size: 12px;
+    margin-top: 7px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1.4fr .8fr;
+    gap: 18px;
+    margin-top: 18px;
+}
+
+.card-title {
+    font-size: 17px;
+    font-weight: 800;
+    margin-bottom: 17px;
+}
+
+.chart {
+    height: 270px;
+    display: flex;
+    align-items: end;
+    gap: 9px;
+    padding-top: 20px;
+}
+
+.bar {
+    flex: 1;
+    background: linear-gradient(to top,#673dff,#b195ff);
+    border-radius: 8px 8px 2px 2px;
+    min-height: 10px;
+}
+
+/* ================= CONNECTIONS ================= */
+
+.connections {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.platform-card {
+    background: #11131a;
+    border: 1px solid #242833;
+    border-radius: 18px;
+    padding: 22px;
+}
+
+.platform-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.platform-name {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 800;
+}
+
+.platform-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: #1c1f28;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.status {
+    font-size: 11px;
+    padding: 6px 9px;
+    border-radius: 30px;
+    background: #242833;
+    color: #949baa;
+}
+
+.status.connected {
+    background: #163629;
+    color: #4be39b;
+}
+
+.platform-info {
+    color: #818797;
+    margin: 18px 0;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.connect-btn {
+    width: 100%;
+    padding: 11px;
+    border-radius: 10px;
+    background: #20232d;
+    color: white;
+    font-weight: 700;
+}
+
+.connect-btn:hover {
+    background: #2a2e3a;
+}
+
+/* ================= ACTIVITY ================= */
+
+.activity {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.activity-row {
+    background: #171a22;
+    border-radius: 12px;
+    padding: 13px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.activity-left {
+    display: flex;
+    gap: 10px;
+}
+
+.activity-icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 9px;
+    background: #242834;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.activity-time {
+    color: #6e7483;
+    font-size: 11px;
+}
+
+/* ================= POINTS ================= */
+
+.points-box {
+    text-align: center;
+    padding: 30px;
+}
+
+.points-number {
+    font-size: 55px;
+    font-weight: 900;
+    background: linear-gradient(90deg,#a276ff,#55dfff);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.points-label {
+    color: #8a90a0;
+}
+
+/* ================= SETTINGS ================= */
+
+.setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 0;
+    border-bottom: 1px solid #242833;
+}
+
+.setting-row:last-child {
+    border-bottom: 0;
+}
+
+.setting-description {
+    color: #7e8494;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:1000px) {
+    .stats {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .connections {
+        grid-template-columns: 1fr;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media(max-width:700px) {
+    .sidebar {
+        width: 70px;
+        padding: 15px 8px;
+    }
+
+    .sidebar-logo .logo {
+        font-size: 18px;
+    }
+
+    .nav-item {
+        font-size: 0;
+        text-align: center;
+    }
+
+    .nav-item::first-letter {
+        font-size: 20px;
+    }
+
+    .main {
+        margin-left: 70px;
+        width: calc(100% - 70px);
+        padding: 18px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= AUTH ================= -->
+
+<section id="authScreen">
+
+    <div class="auth-box">
+
+        <div class="logo">VYBE<span>Studio</span></div>
+
+        <div class="auth-subtitle" id="authSubtitle">
+            Sign in to your creator dashboard
+        </div>
+
+        <input
+            id="authName"
+            class="input hidden"
+            placeholder="Your name"
+        >
+
+        <input
+            id="authEmail"
+            class="input"
+            type="email"
+            placeholder="Email"
+        >
+
+        <input
+            id="authPassword"
+            class="input"
+            type="password"
+            placeholder="Password"
+        >
+
+        <button
+            class="primary-btn"
+            onclick="submitAuth()"
+            id="authButton"
+        >
+            Login
+        </button>
+
+        <div class="switch-auth">
+            <span id="switchText">Don't have an account?</span>
+            <span onclick="switchAuth()" id="switchButton">
+                Sign Up
+            </span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= APP ================= -->
+
+<section id="app" class="hidden">
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+            <div class="logo">VYBE<span>Studio</span></div>
+        </div>
+
+        <div class="nav-title">Workspace</div>
+
+        <div class="nav-item active" onclick="showPage('overview',this)">
+            📊 Overview
+        </div>
+
+        <div class="nav-item" onclick="showPage('content',this)">
+            🎬 Content
+        </div>
+
+        <div class="nav-item" onclick="showPage('comments',this)">
+            💬 Comments
+        </div>
+
+        <div class="nav-item" onclick="showPage('analytics',this)">
+            📈 Analytics
+        </div>
+
+        <div class="nav-item" onclick="showPage('points',this)">
+            ⭐ My Points
+        </div>
+
+        <div class="nav-title">Account</div>
+
+        <div class="nav-item" onclick="showPage('connections',this)">
+            🔗 Connections
+        </div>
+
+        <div class="nav-item" onclick="showPage('settings',this)">
+            ⚙️ Settings
+        </div>
+
+        <div class="nav-item" onclick="logout()">
+            🚪 Logout
+        </div>
+
+    </aside>
+
+
+    <main class="main">
+
+        <div class="topbar">
+
+            <div>
+                <div class="page-title" id="pageTitle">
+                    Overview
+                </div>
+
+                <div class="page-subtitle">
+                    Your private creator dashboard
+                </div>
+            </div>
+
+            <div class="profile">
+
+                <div>
+                    <b id="profileName">Creator</b>
+                    <div style="color:#777d8c;font-size:12px;">
+                        Personal account
+                    </div>
+                </div>
+
+                <div class="avatar" id="avatar">
+                    C
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= OVERVIEW ================= -->
+
+        <div id="page-overview">
+
+            <div class="stats">
+
+                <div class="card">
+                    <div class="stat-label">Followers</div>
+                    <div class="stat-value" id="followers">—</div>
+                    <div class="stat-change">Connected data</div>
+                </div>
+
+                <div class="card">
+                    <div class="stat-label">Likes</div>
+                    <div class="stat-value" id="likes">—</div>
+                    <div class="stat-change">Connected data</div>
+                </div>
+
+                <div class="card">
+                    <div class="stat-label">Comments</div>
+                    <div class="stat-value" id="comments">—</div>
+                    <div class="stat-change">Connected data</div>
+                </div>
+
+                <div class="card">
+                    <div class="stat-label">Views</div>
+                    <div class="stat-value" id="views">—</div>
+                    <div class="stat-change">Connected data</div>
+                </div>
+
+                <div class="card">
+                    <div class="stat-label">Points</div>
+                    <div class="stat-value" id="points">0</div>
+                    <div class="stat-change">Your private points</div>
+                </div>
+
+            </div>
+
+
+            <div class="grid">
+
+                <div class="card">
+
+                    <div class="card-title">
+                        Performance
+                    </div>
+
+                    <div class="chart" id="chart"></div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-title">
+                        Recent Activity
+                    </div>
+
+                    <div class="activity" id="activityList">
+
+                        <div style="color:#777d8c;">
+                            No activity recorded yet.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= CONTENT ================= -->
+
+        <div id="page-content" class="hidden">
+
+            <div class="card">
+
+                <div class="card-title">
+                    Your Content
+                </div>
+
+                <p style="color:#858b9b;">
+                    Content data will appear here when a supported
+                    platform is connected through its official API.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= COMMENTS ================= -->
+
+        <div id="page-comments" class="hidden">
+
+            <div class="card">
+
+                <div class="card-title">
+                    Comments
+                </div>
+
+                <p style="color:#858b9b;">
+                    Comments available through supported platform APIs
+                    will appear here.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= ANALYTICS ================= -->
+
+        <div id="page-analytics" class="hidden">
+
+            <div class="card">
+
+                <div class="card-title">
+                    Analytics
+                </div>
+
+                <p style="color:#858b9b;">
+                    Analytics will be loaded from connected accounts.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= POINTS ================= -->
+
+        <div id="page-points" class="hidden">
+
+            <div class="card points-box">
+
+                <div class="points-number" id="pointsBig">
+                    0
+                </div>
+
+                <div class="points-label">
+                    Your private points
+                </div>
+
+                <div style="margin-top:25px;color:#73798a;">
+                    Points are calculated only from verified activity
+                    received through supported APIs.
+                </div>
+
+            </div>
+
+            <div class="card" style="margin-top:18px;">
+
+                <div class="card-title">
+                    Points History
+                </div>
+
+                <div id="pointsHistory">
+                    <div style="color:#777d8c;">
+                        No points activity yet.
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= CONNECTIONS ================= -->
+
+        <div id="page-connections" class="hidden">
+
+            <div class="connections">
+
+                <!-- TIKTOK -->
+
+                <div class="platform-card">
+
+                    <div class="platform-header">
+
+                        <div class="platform-name">
+
+                            <div class="platform-icon">
+                                ♪
+                            </div>
+
+                            TikTok
+
+                        </div>
+
+                        <div
+                            class="status"
+                            id="tiktokStatus"
+                        >
+                            Not connected
+                        </div>
+
+                    </div>
+
+                    <div class="platform-info">
+
+                        Connect using TikTok's official
+                        authorization system.
+
+                    </div>
+
+                    <button
+                        class="connect-btn"
+                        onclick="connectPlatform('tiktok')"
+                    >
+                        Connect TikTok
+                    </button>
+
+                </div>
+
+
+                <!-- YOUTUBE -->
+
+                <div class="platform-card">
+
+                    <div class="platform-header">
+
+                        <div class="platform-name">
+
+                            <div class="platform-icon">
+                                ▶
+                            </div>
+
+                            YouTube
+
+                        </div>
+
+                        <div
+                            class="status"
+                            id="youtubeStatus"
+                        >
+                            Not connected
+                        </div>
+
+                    </div>
+
+                    <div class="platform-info">
+
+                        Connect your Google/YouTube account
+                        using official OAuth.
+
+                    </div>
+
+                    <button
+                        class="connect-btn"
+                        onclick="connectPlatform('youtube')"
+                    >
+                        Connect YouTube
+                    </button>
+
+                </div>
+
+
+                <!-- INSTAGRAM -->
+
+                <div class="platform-card">
+
+                    <div class="platform-header">
+
+                        <div class="platform-name">
+
+                            <div class="platform-icon">
+                                ◎
+                            </div>
+
+                            Instagram
+
+                        </div>
+
+                        <div
+                            class="status"
+                            id="instagramStatus"
+                        >
+                            Not connected
+                        </div>
+
+                    </div>
+
+                    <div class="platform-info">
+
+                        Connect through Meta's official
+                        authorization flow.
+
+                    </div>
+
+                    <button
+                        class="connect-btn"
+                        onclick="connectPlatform('instagram')"
+                    >
+                        Connect Instagram
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= SETTINGS ================= -->
+
+        <div id="page-settings" class="hidden">
+
+            <div class="card">
+
+                <div class="card-title">
+                    Account Settings
+                </div>
+
+                <div class="setting-row">
+
+                    <div>
+                        <b>Account name</b>
+
+                        <div class="setting-description">
+                            Your private dashboard name
+                        </div>
+                    </div>
+
+                    <input
+                        id="settingsName"
+                        class="input"
+                        style="width:220px;margin:0;"
+                    >
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div>
+                        <b>Email</b>
+
+                        <div class="setting-description">
+                            Your account email
+                        </div>
+                    </div>
+
+                    <div id="settingsEmail">
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div>
+                        <b>Private dashboard</b>
+
+                        <div class="setting-description">
+                            Your statistics are only shown
+                            inside your account.
+                        </div>
+                    </div>
+
+                    <span style="color:#4be39b;">
+                        Enabled
+                    </span>
+
+                </div>
+
+
+                <button
+                    class="primary-btn"
+                    style="max-width:220px;"
+                    onclick="saveSettings()"
+                >
+                    Save Settings
+                </button>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</section>
+
+
+<script>
+
+/* ============================================================
+   VYBE STUDIO
+   FRONTEND
+   REAL PLATFORM CONNECTIONS USE BACKEND OAUTH ROUTES
+   ============================================================ */
+
+
+/* ================= STATE ================= */
+
+let authMode = "login";
+
+let currentUser =
+    JSON.parse(localStorage.getItem("vybe_current_user")) || null;
+
+
+/* ================= AUTH ================= */
+
+function switchAuth() {
+
+    authMode =
+        authMode === "login"
+            ? "signup"
+            : "login";
+
+    const subtitle =
+        document.getElementById("authSubtitle");
+
+    const button =
+        document.getElementById("authButton");
+
+    const name =
+        document.getElementById("authName");
+
+    const switchText =
+        document.getElementById("switchText");
+
+    const switchButton =
+        document.getElementById("switchButton");
+
+
+    if (authMode === "signup") {
+
+        subtitle.textContent =
+            "Create your private creator dashboard";
+
+        button.textContent =
+            "Create Account";
+
+        name.classList.remove("hidden");
+
+        switchText.textContent =
+            "Already have an account?";
+
+        switchButton.textContent =
+            "Login";
+
+    } else {
+
+        subtitle.textContent =
+            "Sign in to your creator dashboard";
+
+        button.textContent =
+            "Login";
+
+        name.classList.add("hidden");
+
+        switchText.textContent =
+            "Don't have an account?";
+
+        switchButton.textContent =
+            "Sign Up";
+
+    }
+}
+
+
+function submitAuth() {
+
+    const name =
+        document.getElementById("authName").value.trim();
+
+    const email =
+        document.getElementById("authEmail").value.trim();
+
+    const password =
+        document.getElementById("authPassword").value;
+
+
+    if (!email || !password) {
+
+        alert("Please enter your email and password.");
+
+        return;
+    }
+
+
+    if (authMode === "signup") {
+
+        if (!name) {
+
+            alert("Please enter your name.");
+
+            return;
+        }
+
+
+        const user = {
+
+            name,
+            email,
+
+            stats: {
+                followers: null,
+                likes: null,
+                comments: null,
+                views: null,
+                points: 0
+            },
+
+            connections: {
+
+                tiktok: false,
+                youtube: false,
+                instagram: false
+
+            },
+
+            activities: [],
+
+            pointsHistory: []
+
+        };
+
+
+        localStorage.setItem(
+            "vybe_user_" + email,
+            JSON.stringify(user)
+        );
+
+        currentUser = user;
+
+        localStorage.setItem(
+            "vybe_current_user",
+            JSON.stringify(currentUser)
+        );
+
+        openDashboard();
+
+        return;
+    }
+
+
+    const saved =
+        localStorage.getItem(
+            "vybe_user_" + email
+        );
+
+
+    if (!saved) {
+
+        alert(
+            "Account not found. Please sign up first."
+        );
+
+        return;
+    }
+
+
+    currentUser =
+        JSON.parse(saved);
+
+    localStorage.setItem(
+        "vybe_current_user",
+        JSON.stringify(currentUser)
+    );
+
+    openDashboard();
+}
+
+
+/* ================= DASHBOARD ================= */
+
+function openDashboard() {
+
+    document
+        .getElementById("authScreen")
+        .classList.add("hidden");
+
+    document
+        .getElementById("app")
+        .classList.remove("hidden");
+
+    loadUser();
+
+}
+
+
+function loadUser() {
+
+    if (!currentUser) return;
+
+
+    document.getElementById(
+        "profileName"
+    ).textContent =
+        currentUser.name;
+
+
+    document.getElementById(
+        "avatar"
+    ).textContent =
+        currentUser.name
+            .charAt(0)
+            .toUpperCase();
+
+
+    document.getElementById(
+        "settingsName"
+    ).value =
+        currentUser.name;
+
+
+    document.getElementById(
+        "settingsEmail"
+    ).textContent =
+        currentUser.email;
+
+
+    updateStats();
+
+    updateConnections();
+
+    renderActivity();
+
+    renderPointsHistory();
+
+    renderChart();
+
+}
+
+
+function saveUser() {
+
+    if (!currentUser) return;
+
+    localStorage.setItem(
+        "vybe_user_" + currentUser.email,
+        JSON.stringify(currentUser)
+    );
+
+    localStorage.setItem(
+        "vybe_current_user",
+        JSON.stringify(currentUser)
+    );
+
+}
+
+
+/* ================= NAVIGATION ================= */
+
+function showPage(page, element) {
+
+    const pages = [
+        "overview",
+        "content",
+        "comments",
+        "analytics",
+        "points",
+        "connections",
+        "settings"
+    ];
+
+
+    pages.forEach(function(name) {
+
+        const el =
+            document.getElementById(
+                "page-" + name
+            );
+
+        if (el) {
+
+            el.classList.add("hidden");
+
+        }
+
+    });
+
+
+    document
+        .getElementById("page-" + page)
+        .classList.remove("hidden");
+
+
+    document
+        .querySelectorAll(".nav-item")
+        .forEach(function(item) {
+
+            item.classList.remove("active");
+
+        });
+
+
+    if (element) {
+
+        element.classList.add("active");
+
+    }
+
+
+    const titles = {
+
+        overview: "Overview",
+        content: "Content",
+        comments: "Comments",
+        analytics: "Analytics",
+        points: "My Points",
+        connections: "Connections",
+        settings: "Settings"
+
+    };
+
+
+    document.getElementById(
+        "pageTitle"
+    ).textContent =
+        titles[page] || "Overview";
+
+}
+
+
+/* ================= CONNECTIONS ================= */
+
+/*
+    IMPORTANT:
+
+    This does NOT fake a connection.
+
+    Clicking a platform sends the user to your
+    backend OAuth route.
+
+    Your backend must implement:
+
+    /auth/tiktok
+    /auth/youtube
+    /auth/instagram
+
+    Those routes should redirect to the official
+    platform authorization pages.
+*/
+
+function connectPlatform(platform) {
+
+    const routes = {
+
+        tiktok:
+            "/auth/tiktok",
+
+        youtube:
+            "/auth/youtube",
+
+        instagram:
+            "/auth/instagram"
+
+    };
+
+
+    if (!routes[platform]) {
+
+        return;
+
+    }
+
+
+    window.location.href =
+        routes[platform];
+
+}
+
+
+/* ================= CONNECTION STATUS ================= */
+
+function updateConnections() {
+
+    if (!currentUser) return;
+
+
+    const platforms = [
+        "tiktok",
+        "youtube",
+        "instagram"
+    ];
+
+
+    platforms.forEach(function(platform) {
+
+        const status =
+            document.getElementById(
+                platform + "Status"
+            );
+
+
+        const button =
+            status
+                ?.parentElement
+                ?.parentElement
+                ?.querySelector(
+                    ".connect-btn"
+                );
+
+
+        if (!status) return;
+
+
+        if (
+            currentUser.connections &&
+            currentUser.connections[platform]
+        ) {
+
+            status.textContent =
+                "Connected";
+
+            status.classList.add(
+                "connected"
+            );
+
+            if (button) {
+
+                button.textContent =
+                    "Manage Connection";
+
+            }
+
+        } else {
+
+            status.textContent =
+                "Not connected";
+
+            status.classList.remove(
+                "connected"
+            );
+
+            if (button) {
+
+                button.textContent =
+                    "Connect " +
+                    capitalize(platform);
+
+            }
+
+        }
+
+    });
+
+}
+
+
+function capitalize(text) {
+
+    return text
+        .charAt(0)
+        .toUpperCase()
+        + text.slice(1);
+
+}
+
+
+/* ================= STATS ================= */
+
+function updateStats() {
+
+    if (!currentUser) return;
+
+
+    const stats =
+        currentUser.stats || {};
+
+
+    document.getElementById(
+        "followers"
+    ).textContent =
+        formatNumber(stats.followers);
+
+
+    document.getElementById(
+        "likes"
+    ).textContent =
+        formatNumber(stats.likes);
+
+
+    document.getElementById(
+        "comments"
+    ).textContent =
+        formatNumber(stats.comments);
+
+
+    document.getElementById(
+        "views"
+    ).textContent =
+        formatNumber(stats.views);
+
+
+    document.getElementById(
+        "points"
+    ).textContent =
+        formatNumber(stats.points || 0);
+
+
+    document.getElementById(
+        "pointsBig"
+    ).textContent =
+        formatNumber(stats.points || 0);
+
+}
+
+
+function formatNumber(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "—";
+
+    }
+
+
+    return Number(value).toLocaleString();
+
+}
+
+
+/* ================= ACTIVITY ================= */
+
+function renderActivity() {
+
+    const container =
+        document.getElementById(
+            "activityList"
+        );
+
+
+    container.innerHTML = "";
+
+
+    if (
+        !currentUser ||
+        !currentUser.activities ||
+        currentUser.activities.length === 0
+    ) {
+
+        container.innerHTML = `
+            <div style="color:#777d8c;">
+                No activity recorded yet.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    currentUser.activities
+        .slice(0, 10)
+        .forEach(function(activity) {
+
+            const row =
+                document.createElement("div");
+
+            row.className =
+                "activity-row";
+
+
+            row.innerHTML = `
+
+                <div class="activity-left">
+
+                    <div class="activity-icon">
+                        ${activity.icon || "•"}
+                    </div>
+
+                    <div>
+                        <b>${escapeHTML(activity.title)}</b>
+
+                        <div
+                            style="
+                                color:#858b9b;
+                                font-size:12px;
+                                margin-top:3px;
+                            "
+                        >
+                            ${escapeHTML(activity.platform || "")}
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="activity-time">
+                    ${escapeHTML(activity.time || "")}
+                </div>
+
+            `;
+
+
+            container.appendChild(row);
+
+        });
+
+}
+
+
+/* ================= POINTS HISTORY ================= */
+
+function renderPointsHistory() {
+
+    const container =
+        document.getElementById(
+            "pointsHistory"
+        );
+
+
+    container.innerHTML = "";
+
+
+    if (
+        !currentUser ||
+        !currentUser.pointsHistory ||
+        currentUser.pointsHistory.length === 0
+    ) {
+
+        container.innerHTML = `
+            <div style="color:#777d8c;">
+                No points activity yet.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    currentUser.pointsHistory
+        .slice(0, 20)
+        .forEach(function(item) {
+
+            const row =
+                document.createElement("div");
+
+
+            row.className =
+                "activity-row";
+
+
+            row.innerHTML = `
+
+                <div>
+
+                    <b>
+                        ${escapeHTML(item.reason)}
+                    </b>
+
+                    <div
+                        style="
+                            color:#777d8c;
+                            font-size:12px;
+                        "
+                    >
+                        ${escapeHTML(item.time || "")}
+                    </div>
+
+                </div>
+
+                <b style="color:#4be39b;">
+                    +${Number(item.points)}
+                </b>
+
+            `;
+
+
+            container.appendChild(row);
+
+        });
+
+}
+
+
+/* ================= CHART ================= */
+
+function renderChart() {
+
+    const chart =
+        document.getElementById(
+            "chart"
+        );
+
+
+    chart.innerHTML = "";
+
+
+    const values = [
+        25,
+        40,
+        35,
+        60,
+        48,
+        75,
+        65,
+        85,
+        70,
+        95
+    ];
+
+
+    values.forEach(function(value) {
+
+        const bar =
+            document.createElement("div");
+
+
+        bar.className = "bar";
+
+        bar.style.height =
+            value + "%";
+
+
+        chart.appendChild(bar);
+
+    });
+
+}
+
+
+/* ================= SETTINGS ================= */
+
+function saveSettings() {
+
+    if (!currentUser) return;
+
+
+    const newName =
+        document.getElementById(
+            "settingsName"
+        ).value.trim();
+
+
+    if (!newName) {
+
+        alert("Name cannot be empty.");
+
+        return;
+
+    }
+
+
+    currentUser.name =
+        newName;
+
+
+    saveUser();
+
+    loadUser();
+
+
+    alert("Settings saved.");
+
+}
+
+
+function logout() {
+
+    localStorage.removeItem(
+        "vybe_current_user"
+    );
+
+    currentUser = null;
+
+
+    document
+        .getElementById("app")
+        .classList.add("hidden");
+
+
+    document
+        .getElementById("authScreen")
+        .classList.remove("hidden");
+
+}
+
+
+/* ================= SECURITY ================= */
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+}
+
+
+/* ================= STARTUP ================= */
+
+if (currentUser) {
+
+    openDashboard();
+
+}
+
+</script>
+
+</body>
+</html>
